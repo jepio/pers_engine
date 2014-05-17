@@ -25,7 +25,7 @@ def graphtonp(graph):
         npcolumn = np.array(column, copy=True)
         output.append(column)
     output = np.array(output)
-    return output.T
+    return ( output.T, n )
 
 def openroot(name):
     TFile.getkeynames = getkeynames
