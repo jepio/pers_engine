@@ -52,5 +52,7 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-# Generated XML files
+# Generated XML/png files
 *.xml
+*.png
+images/
