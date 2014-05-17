@@ -40,6 +40,7 @@ def creategraph(xmlelement, graph_data, name, num):
     """
     graph = ET.SubElement(xmlelement, "graph")
     graph.set("name", name)
+    graph.set("total", str(num))
     for i in xrange(num):
         point = ET.SubElement(graph, "point")
         point.set("number", str(i))

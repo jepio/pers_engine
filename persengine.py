@@ -12,9 +12,10 @@ def main_old():
         persxml.creategraph(root, graph_data[i], keynames[i], 2)
     persxml.writexml(root, name)
 
+
 def main():
-	obj = iohandler.IOHandler()
-	obj.root2xml()
+    obj = iohandler.IOHandler()
+    obj.root2xml()
 
 if __name__ == '__main__':
     main()
