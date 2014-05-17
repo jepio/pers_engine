@@ -1,6 +1,5 @@
 import roothandler as rh
 import xmlhandler as xh
-from ROOT import TGraphErrors
 
 
 class IOHandler:
@@ -21,13 +20,33 @@ class IOHandler:
         """
         rootfile, keynames = rh.openroot(self.input)
         xmlfile = xh.createindex(keynames)
-        for graphname in keynames:
+        keynames_copy = keynames[:]
+        for graphname in keynames_copy:
             graph = rootfile.Get(graphname)
-            if type(graph) is not TGraphErrors:
+            if type(graph) is not rh.TGraphErrors:
+                print "Removed object: ", graph
+                keynames.remove(graphname)
                 continue
             array, number = rh.graphtonp(graph)
             xh.creategraph(xmlfile, array, graphname, number)
+        index = xmlfile.find("index")
+        keynames.sort()
+        index.text = ' '.join(keynames)
         xh.writexml(xmlfile, self.output)
+
+    def xml2mem(self, xmlfilename=None):
+        self.tree = xh.ET.parse(xmlfilename)
+        self.root = self.tree.getroot()
+        self.index = self.root[0].text.split()
+        self.loaded = True
+
+    def memgrabgraph(self, graphname):
+        if self.loaded:
+            graphdata = self.root.find("graph[@name='{0}']".format(graphname))
+            graphdata = xh.ET.tostringlist(graphdata, method="text")
+            (x, y, xe, ye) = (graphdata[::4], graphdata[1::4],
+                              graphdata[2::4], graphdata[3::4])
+        return (x, y, xe, ye)
 
 
 """
