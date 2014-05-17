@@ -1,0 +1,1 @@
+<data><index>A B</index><graph name="A"><point number="0"><x>0</x><y>0</y><xerr>0</xerr><yerr>1</yerr></point><point number="1"><x>0</x><y>1</y><xerr>2</xerr><yerr>3</yerr></point></graph><graph name="B"><point number="0"><x>2</x><y>3</y><xerr>0</xerr><yerr>1</yerr></point><point number="1"><x>0</x><y>6</y><xerr>2</xerr><yerr>8</yerr></point></graph></data>
