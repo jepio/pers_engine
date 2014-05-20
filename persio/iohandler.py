@@ -47,6 +47,12 @@ class IOHandler:
         self.index = self.root[0].text.split()
         self.loaded = True
 
+    def xmlindex(self):
+        if self.loaded:
+            return self.index
+        else:
+            print 'XML file not loaded'
+
     def memgrabgraph(self, graphname):
         if self.loaded:
             graphdata = self.root.find("graph[@name='{0}']".format(graphname))
