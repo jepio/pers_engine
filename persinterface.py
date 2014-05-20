@@ -1,27 +1,33 @@
 from persio import iohandler as ioh
+import os
 
 
 class Persinterface:
+
 	def convert(self):
 		filename = raw_input("File to convert (default input_data.root) \n")
-		filename = filename or 'input_data.root' # if filename == '' will use default
-		self.ioh_obj = ioh.IOHandler(filename)
-		self.ioh_obj.root2xml()
-		print "Successfully converted file", filename
-		pass
+		# if filename == '' will use default
+		filename = filename or 'input_data.root'
+		if os.path.isfile(filename):
+			self.ioh_obj = ioh.IOHandler(filename)
+			self.ioh_obj.root2xml()
+			print "Successfully converted file", filename
+		else:
+			print 'ROOT file "' + filename + '" does not exist'
 
 	def load(self):
 		print 'load function'
 		pass
 
-	io_functions = { '1' : ('Convert ROOT file to XML', convert),
-					 '2' : ('Load XML file', load) }
+	def exit(self):
+		exit(0)
 
+	io_functions = {'1': ('Convert ROOT file to XML', convert),
+					'2': ('Load XML file', load),
+					'3': ('Exit', exit)}
 
 	def __init__(self):
 		pass
-
-
 
 	def welcome_message(self):
 		print ""
@@ -33,4 +39,5 @@ class Persinterface:
 		for key in sorted(self.io_functions.keys()):
 			print key,' ',self.io_functions[key][0]
 		cmd = raw_input()
-		self.io_functions[cmd][1](self)
+		if cmd in self.io_functions.keys():
+			self.io_functions[cmd][1](self)
