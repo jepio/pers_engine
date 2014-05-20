@@ -1,4 +1,5 @@
 from persio import iohandler
+import persinterface as ui
 
 
 def main_old():
@@ -15,7 +16,10 @@ def main_old():
 
 def main():
     obj = iohandler.IOHandler()
-    obj.root2xml()
+#    obj.root2xml()
+    interface = ui.Persinterface()
+    while True:
+        interface.run()
 
 if __name__ == '__main__':
     main()
