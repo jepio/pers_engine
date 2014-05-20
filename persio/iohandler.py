@@ -40,6 +40,14 @@ class IOHandler:
         self.converted = True
 
     def xml2mem(self, xmlfilename=None):
+        """
+        Loads either xmlfilename or the initialized output file into memory.
+        Defines references to:
+            xml tree,
+            xml root,
+            xml index
+        and toggles a switch so the class knows it has something loaded.
+        """
         if self.converted:
             xmlfilename = xmlfilename or self.output
         self.tree = xh.ET.parse(xmlfilename)
@@ -48,12 +56,22 @@ class IOHandler:
         self.loaded = True
 
     def xmlindex(self):
+        """
+        Returns the index of a loaded xml file.
+        """
         if self.loaded:
             return self.index
         else:
             print 'XML file not loaded'
 
     def memgrabgraph(self, graphname):
+        """
+        Grabs a graph called graphname from the xml file. Returns a tuple of:
+            x - x points
+            y - y points
+            xe - error bars on x points
+            ye - error bars on y points
+        """
         if self.loaded:
             graphdata = self.root.find("graph[@name='{0}']".format(graphname))
             graphdata = xh.ET.tostringlist(graphdata, method="text")
