@@ -2,14 +2,15 @@ from persio import iohandler as ioh
 import os
 
 
-def pretty_print(CL_output):
+def pretty_print(array):
     """
     Borrowed from stackexchange.
     """
+    CL_output = array[:]
     columns = len(CL_output) // 30 + 2
     for i, val in enumerate(CL_output):
-        CL_output[i] = '\033[1;31m{:2d}\033[1;m'.format(i) + ": " + val
-    lines = ("".join(s.ljust(30) for s in CL_output[i:i + columns])
+        CL_output[i] = '{:2d}'.format(i) + ": " + val
+    lines = ("".join(s.ljust(20) for s in CL_output[i:i + columns])
              for i in range(0, len(CL_output), columns))
     return "\n".join(lines)
 
