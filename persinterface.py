@@ -2,6 +2,20 @@ from persio import iohandler as ioh
 import os
 
 
+def pretty_print(CL_output):
+    """
+    Borrowed from stackexchange.
+    """
+    columns = len(CL_output) // 30 + 2
+    for i, val in enumerate(CL_output):
+        CL_output[i] = '\033[1;31m{:2d}\033[1;m'.format(i) + ": " + val
+    lines = ("".join(s.ljust(30) for s in CL_output[i:i + columns - 1]) + CL_output[i:i + columns][-1]
+             for i in range(0, len(CL_output), columns))
+#    if float(len(CL_output)) / columns != len(CL_output) // columns:
+#        del CL_output[-1]
+    return "\n".join(lines)
+
+
 class Persinterface:
 
     def convert(self):
@@ -34,9 +48,26 @@ class Persinterface:
     def exit(self):
         exit(0)
 
+    def index(self):
+        print pretty_print(self.ioh_obj.xmlindex())
+
+    def plot(self):
+        pass
+
+    def trend(self):
+        pass
+
+    def back(self):
+        self.loaded = False
+
     io_functions = {'1': ('Convert ROOT file to XML', convert),
-                    '2': ('Load XML file', load),
+                    '2': ('Load XML file and perform analysis', load),
                     '3': ('Exit', exit)}
+
+    analysis_functions = {'1': ('Print graph index', index),
+                          '2': ('Plot a graph', plot),
+                          '3': ('Perform a trend analysis', trend),
+                          '4': ('Return to I/O operations', back)}
 
     def __init__(self):
         self.loaded = False
@@ -53,15 +84,17 @@ class Persinterface:
             print "\n"
             print "Choose action"
 
+    def select(self, array):
+        self.welcome_message()
+        for key in sorted(array.keys()):
+            print key, ':', array[key][0]
+        cmd = raw_input()
+        if cmd in array.keys():
+            array[cmd][1](self)
+
     def run(self):
         if not self.loaded:
-            self.welcome_message()
-            for key in sorted(self.io_functions.keys()):
-                print key, ':', self.io_functions[key][0]
-            cmd = raw_input()
-            if cmd in self.io_functions.keys():
-                self.io_functions[cmd][1](self)
+            self.select(self.io_functions)
         else:
-            print "What type of analysis would you like to perform?"
-            self.loaded = False
+            self.select(self.analysis_functions)
             pass
