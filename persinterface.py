@@ -9,10 +9,8 @@ def pretty_print(CL_output):
     columns = len(CL_output) // 30 + 2
     for i, val in enumerate(CL_output):
         CL_output[i] = '\033[1;31m{:2d}\033[1;m'.format(i) + ": " + val
-    lines = ("".join(s.ljust(30) for s in CL_output[i:i + columns - 1]) + CL_output[i:i + columns][-1]
+    lines = ("".join(s.ljust(30) for s in CL_output[i:i + columns])
              for i in range(0, len(CL_output), columns))
-#    if float(len(CL_output)) / columns != len(CL_output) // columns:
-#        del CL_output[-1]
     return "\n".join(lines)
 
 
