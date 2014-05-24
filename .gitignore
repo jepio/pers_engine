@@ -58,3 +58,5 @@ docs/_build/
 images/
 *.pdf
 *.ps
+
+.idea
