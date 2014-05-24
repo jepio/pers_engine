@@ -1,8 +1,12 @@
+""" Module defines the IOHandler class for interacting with files. """
 import roothandler as rh
 import xmlhandler as xh
 
 
-class IOHandler:
+class IOHandler(object):
+    """
+    Class for interacting with ROOT/XML files, esp. converintg between them.
+    """
 
     def __init__(self, filename='input_data.root'):
         """
@@ -75,9 +79,9 @@ class IOHandler:
         if self.loaded:
             graphdata = self.root.find("graph[@name='{0}']".format(graphname))
             graphdata = xh.ET.tostringlist(graphdata, method="text")
-            (x, y, xe, ye) = (graphdata[::4], graphdata[1::4],
-                              graphdata[2::4], graphdata[3::4])
-        return (x, y, xe, ye)
+            (xval, yval, xerr, yerr) = (graphdata[::4], graphdata[1::4],
+                                        graphdata[2::4], graphdata[3::4])
+        return (xval, yval, xerr, yerr)
 
 
 """
