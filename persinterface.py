@@ -1,62 +1,83 @@
+""" The Persistency UI modules, defines the Persinterface class, which takes
+ care of user input """
 from persio import iohandler as ioh
 import os
 
 
 def pretty_print(array):
-    """
-    Borrowed from stackexchange.
-    """
-    CL_output = array[:]
-    columns = len(CL_output) // 30 + 2
-    for i, val in enumerate(CL_output):
-        CL_output[i] = '{:2d}'.format(i) + ": " + val
-    lines = ("".join(s.ljust(20) for s in CL_output[i:i + columns])
-             for i in range(0, len(CL_output), columns))
+    """ Convert output to columns. Borrowed from stackexchange. """
+    cl_output = array[:]
+    columns = len(cl_output) // 30 + 2
+    for i, val in enumerate(cl_output):
+        cl_output[i] = '{:2d}'.format(i) + ": " + val
+    lines = ("".join(s.ljust(20) for s in cl_output[i:i + columns])
+             for i in range(0, len(cl_output), columns))
     return "\n".join(lines)
 
 
-class Persinterface:
+class Persinterface(object):
+    """
+    The User Interface class, defines methods for the user to execute.
+    To extend functionality, write an extra function and add to the function
+    dictionaries.
+    """
 
     def convert(self):
+        """
+        Convert file from ROOT to XML verbosely.
+        Will default to input_data.root as the filename.
+        """
         filename = raw_input("File to convert (default input_data.root)? \n")
         # if filename == '' will use default
         filename = filename or 'input_data.root'
         if os.path.isfile(filename):
             self.ioh_obj = ioh.IOHandler(filename)
-            self.ioh_obj.root2xml()
-            print "Successfully converted file", filename
+            if self.ioh_obj.root2xml():
+                print "Successfully converted file", filename
+            else:
+                print "Failed to convert file"
         else:
             print 'ROOT file "' + filename + '" does not exist'
 
     def load(self):
+        """
+        Load XML file into the engine verbosely.
+        Will default to input_data.xml as the filename.
+        """
         filename = raw_input(
             "File to load into memory (default input_data.xml)? \n")
         filename = filename or 'input_data.xml'
         if os.path.isfile(filename):
             try:
                 self.ioh_obj
-            except:
+            except AttributeError:
                 self.ioh_obj = ioh.IOHandler()
-            self.ioh_obj.xml2mem(filename)
-            self.loaded = True
-            print "Successfully loaded file\n", filename
+            self.loaded = self.ioh_obj.xml2mem(filename)
+            if self.loaded:
+                print "Successfully loaded file\n", filename
+            else:
+                print "Failed to load file"
         else:
             print 'XML file "' + filename + '" does not exist\n'
-        pass
 
     def exit(self):
+        """ Exit program. """
         exit(0)
 
     def index(self):
+        """ Print loaded XML objects index field. """
         print pretty_print(self.ioh_obj.xmlindex())
 
     def plot(self):
+        """ Plot graph from loaded XML file. """
         pass
 
     def trend(self):
+        """ Perform trending analysis of current@temperature in time. """
         pass
 
     def back(self):
+        """ Go back to I/O menu. """
         self.loaded = False
 
     io_functions = {'1': ('Convert ROOT file to XML', convert),
@@ -71,9 +92,9 @@ class Persinterface:
     def __init__(self):
         self.loaded = False
         self.firstlaunch = True
-        pass
 
     def welcome_message(self):
+        """ Print the welcome message. """
         if self.firstlaunch:
             print "\n"
             print "Welcome to the Persistance Engine 2014."
@@ -84,6 +105,7 @@ class Persinterface:
             print "Choose action"
 
     def select(self, array):
+        """ Select an action from array based on user input. """
         self.welcome_message()
         for key in sorted(array.keys()):
             print key, ':', array[key][0]
@@ -92,8 +114,8 @@ class Persinterface:
             array[cmd][1](self)
 
     def run(self):
+        """ Run the user interface. """
         if not self.loaded:
             self.select(self.io_functions)
         else:
             self.select(self.analysis_functions)
-            pass
