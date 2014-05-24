@@ -7,11 +7,11 @@ Requires:
 *   Python 2.7
 *   Numpy
 *   PyROOT
-*   will require Matplotlib
+*   Matplotlib
 
-Run by executing
-`python2.7 persengine.py`
+Run by executing `python2.7 persengine.py` or `./persengine.py`
 
-As a default a *input_data.root* will be turned into *input_data.xml*.
+Run and follow the onscreen instructions. As a default a *input_data.root* will be turned into *input_data.xml*. You can also save plots in *png*, *pdf*, *eps* and print the index of an XML file.
 
-Far from ready.
+Currently working on trending.
+
