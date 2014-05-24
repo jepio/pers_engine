@@ -1,6 +1,7 @@
 """ The Persistency UI modules, defines the Persinterface class, which takes
  care of user input """
 from persio import iohandler as ioh
+from persanalysis import plotengine as pe
 import os
 
 
@@ -16,6 +17,7 @@ def pretty_print(array):
 
 
 class Persinterface(object):
+
     """
     The User Interface class, defines methods for the user to execute.
     To extend functionality, write an extra function and add to the function
@@ -70,7 +72,34 @@ class Persinterface(object):
 
     def plot(self):
         """ Plot graph from loaded XML file. """
-        pass
+        extensions = {'1': 'ps', '2': 'pdf', '3': 'png'}
+        index_list = self.ioh_obj.xmlindex()
+        graph_number = raw_input(
+            "Give the number of the graph you would like to plot "
+            "(valid numbers: 0 - " + str(len(index_list) - 1) + ") \n")
+        try:
+            graph_number = int(graph_number)
+            if graph_number in xrange(len(index_list)):
+                name = index_list[graph_number]
+                data = self.ioh_obj.memgrabgraph(name)
+                plotter = pe.PlotEngine(data, name)
+
+                print "Choose file extension"
+                for number in sorted(extensions.keys()):
+                    print number, ':', extensions[number]
+                ext = raw_input()
+                if ext in extensions.keys():
+                    print "File saved as ", plotter.save(extensions[ext])
+                else:
+                    print "Wrong extension, saving cancelled."
+                    return
+                del plotter
+
+            else:
+                print "The specified number is not valid"
+        except ValueError as error:
+            print error
+            print "The specified input is not a number"
 
     def trend(self):
         """ Perform trending analysis of current@temperature in time. """
@@ -96,12 +125,13 @@ class Persinterface(object):
     def welcome_message(self):
         """ Print the welcome message. """
         if self.firstlaunch:
-            print "\n"
+            print ""
             print "Welcome to the Persistance Engine 2014."
+            print ""
             print "Choose a number corresponding to what you would like to do:"
             self.firstlaunch = False
         else:
-            print "\n"
+            print ""
             print "Choose action"
 
     def select(self, array):
