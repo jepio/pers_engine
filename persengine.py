@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 """ This is the main module, used to launch the persistency engine """
 #from persio import iohandler
-import persinterface as ui
+import persui.persinterface as ui
 
 
 def main():
