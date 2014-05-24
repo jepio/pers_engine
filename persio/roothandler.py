@@ -1,3 +1,6 @@
+""" This module combines functions used for interacting with ROOT files"""
+# pylint: disable=E0611
+# pylint: disable=E1101
 from ROOT import gDirectory, gPad, gROOT, TGraphErrors, TFile
 import numpy as np
 
@@ -5,7 +8,7 @@ import numpy as np
 def getkeynames(self):
     """
     Gets all keys from a directory in a ROOT TFile.
-    Returns a list of strings. This is an extension
+    Returns as list of strings. This is an extension
     to the TGraphErrors class.
     """
     self.cd()
@@ -19,28 +22,28 @@ def graphtonp(graph):
     """
     output = []
     functions = (graph.GetX, graph.GetY, graph.GetEX, graph.GetEY)
-    n = graph.GetN()
+    num = graph.GetN()
     for function in functions:
         column = function()
-        column.SetSize(n)
-        npcolumn = np.array(column, copy=True)
-        output.append(column)
+        column.SetSize(num)
+        npcolumn = np.array(column, copy=True) # potentially unused
+        output.append(npcolumn)
     output = np.array(output)
-    return (output.T, n)
+    return (output.T, num)
 
 
 def openroot(name):
-    """
-    Opens a ROOT file and returns keynames
-    and handle to file.
-    """
+    """ Open a ROOT file, return keynames and handle to file. """
     TFile.getkeynames = getkeynames
-    myfile = TFile(name)
-    return myfile, myfile.getkeynames()
+    myfile = TFile.Open(name)
+    if myfile:
+        return myfile, myfile.getkeynames()
+    else:
+        return myfile, None
 
 
-# Testing procedure
 def main():
+    """ Testing procedure: plot all graphs in a ROOT file. """
     TFile.getkeynames = getkeynames
     myfile = TFile('input_data.root')
     gROOT.SetBatch(True)
