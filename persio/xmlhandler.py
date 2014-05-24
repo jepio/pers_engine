@@ -1,3 +1,4 @@
+""" This module combines functions used for interacting with XML files"""
 import xml.etree.ElementTree as ET
 
 
@@ -20,11 +21,11 @@ def createpoint(point, pointtuple):
     Pass point object and a tuple of values
     with errors.
     """
-    x, y, xerr, yerr = pointtuple
+    xval, yval, xerr, yerr = pointtuple
     value = ET.SubElement(point, "x")
-    value.text = str(x)
+    value.text = str(xval)
     value = ET.SubElement(point, "y")
-    value.text = str(y)
+    value.text = str(yval)
     value = ET.SubElement(point, "xerr")
     value.text = str(xerr)
     value = ET.SubElement(point, "yerr")
@@ -34,7 +35,7 @@ def createpoint(point, pointtuple):
 def creategraph(xmlelement, graph_data, name, num):
     """
     Create a graph entry in the XML tree.
-    Pass the mother element, an array of 
+    Pass the mother element, an array of
     graph data, the graph name and the
     number of points.
     """
