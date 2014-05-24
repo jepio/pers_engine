@@ -72,7 +72,7 @@ class Persinterface(object):
 
     def plot(self):
         """ Plot graph from loaded XML file. """
-        extensions = {'1': 'ps', '2': 'pdf', '3': 'png'}
+        extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
         graph_number = raw_input(
             "Give the number of the graph you would like to plot "
@@ -89,7 +89,7 @@ class Persinterface(object):
                     print number, ':', extensions[number]
                 ext = raw_input()
                 if ext in extensions.keys():
-                    print "File saved as ", plotter.save(extensions[ext])
+                    print "File saved as", plotter.save(extensions[ext])
                 else:
                     print "Wrong extension, saving cancelled."
                     return
