@@ -26,7 +26,7 @@ def graphtonp(graph):
     for function in functions:
         column = function()
         column.SetSize(num)
-        npcolumn = np.array(column, copy=True) # potentially unused
+        npcolumn = np.array(column, copy=True)  # potentially unused
         output.append(npcolumn)
     output = np.array(output)
     return (output.T, num)
