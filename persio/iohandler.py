@@ -4,6 +4,7 @@ import xmlhandler as xh
 
 
 class IOHandler(object):
+
     """
     Class for interacting with ROOT/XML files, esp. converintg between them.
     """
@@ -23,25 +24,31 @@ class IOHandler(object):
         """
         Reads a ROOT file and outputs all TGraphErrors
         objects into a XML file.
+        Returns True or False depending on success/failure.
         """
         rootfile, keynames = rh.openroot(self.input)
-        xmlfile = xh.createindex(keynames)
-        keynames_copy = keynames[:]
+        if rootfile:
+            xmlfile = xh.createindex(keynames)
+            keynames_copy = keynames[:]
 
-        for graphname in keynames_copy:
-            graph = rootfile.Get(graphname)
-            if type(graph) is not rh.TGraphErrors:
-#                print "Removed object: ", graph
-                keynames.remove(graphname)
-                continue
-            array, number = rh.graphtonp(graph)
-            xh.creategraph(xmlfile, array, graphname, number)
+            for graphname in keynames_copy:
+                graph = rootfile.Get(graphname)
+                if type(graph) is not rh.TGraphErrors:
+    #                print "Removed object: ", graph
+                    keynames.remove(graphname)
+                    continue
+                array, number = rh.graphtonp(graph)
+                xh.creategraph(xmlfile, array, graphname, number)
 
-        index = xmlfile.find("index")
-        keynames.sort()
-        index.text = ' '.join(keynames)
-        xh.writexml(xmlfile, self.output)
-        self.converted = True
+            index = xmlfile.find("index")
+            keynames.sort()
+            index.text = ' '.join(keynames)
+            xh.writexml(xmlfile, self.output)
+            self.converted = True
+            return True
+        else:
+            print "Specified file is not a valid ROOT file"
+            return False
 
     def xml2mem(self, xmlfilename=None):
         """
@@ -51,13 +58,20 @@ class IOHandler(object):
             xml root,
             xml index
         and toggles a switch so the class knows it has something loaded.
+        Returns True or False depending on success/failure.
         """
         if self.converted:
             xmlfilename = xmlfilename or self.output
-        self.tree = xh.ET.parse(xmlfilename)
-        self.root = self.tree.getroot()
-        self.index = self.root[0].text.split()
-        self.loaded = True
+        try:
+            self.tree = xh.ET.parse(xmlfilename)
+            self.root = self.tree.getroot()
+            self.index = self.root[0].text.split()
+            self.loaded = True
+            return True
+        except SyntaxError:
+            print "File is not a valid XML file."
+            self.loaded = False
+            return False
 
     def xmlindex(self):
         """
