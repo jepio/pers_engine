@@ -93,6 +93,7 @@ class IOHandler(object):
         if self.loaded:
             graphdata = self.root.find("graph[@name='{0}']".format(graphname))
             graphdata = xh.ET.tostringlist(graphdata, method="text")
+            graphdata = [float(val) for val in graphdata]
             (xval, yval, xerr, yerr) = (graphdata[::4], graphdata[1::4],
                                         graphdata[2::4], graphdata[3::4])
         return (xval, yval, xerr, yerr)
