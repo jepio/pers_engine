@@ -1,11 +1,11 @@
 #!/usr/bin/env python2
-from persio import iohandler
+""" This is the main module, used to launch the persistency engine """
+#from persio import iohandler
 import persinterface as ui
 
 
 def main():
-    obj = iohandler.IOHandler()
-#    obj.root2xml()
+    """ Launches the user interface, and keeps it on."""
     interface = ui.Persinterface()
     while True:
         interface.run()
