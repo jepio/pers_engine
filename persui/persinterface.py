@@ -72,32 +72,44 @@ class Persinterface(object):
         """ Print loaded XML objects index field. """
         print pretty_print(self.ioh_obj.xmlindex())
 
+    @staticmethod
+    def ask(question, dictionary):
+        """ Check whether answer to question is in dictionary. """
+        print "Choose " + question
+        for number in sorted(dictionary.keys()):
+            opt = dictionary[number]
+            choice = opt if type(opt) is str else opt[0]
+            print number, ':', choice
+        answer = raw_input()
+        if answer in dictionary.keys():
+            return True, answer
+        else:
+            return False, None
+
+
     def plot(self):
         """ Plot graph from loaded XML file. """
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
+#       graph_num = [str(i) for i in xrange(len(index_list))]
+#        present, num = self.ask("graph number (valid: 0-" + graph_num[-1])
         graph_number = raw_input(
             "Give the number of the graph you would like to plot "
             "(valid numbers: 0 - " + str(len(index_list) - 1) + ")\n")
         try:
             graph_number = int(graph_number)
             if graph_number in xrange(len(index_list)):
-                name = index_list[graph_number]
-                data = self.ioh_obj.memgrabgraph(name)
-                plotter = pe.PlotEngine(data, name)
 
-                print "Choose file extension"
-                for number in sorted(extensions.keys()):
-                    print number, ':', extensions[number]
-                ext = raw_input()
-                if ext in extensions.keys():
+                present, ext = self.ask("file extension", extensions)
+                if present:
+                    name = index_list[graph_number]
+                    data = self.ioh_obj.memgrabgraph(name)
+                    plotter = pe.PlotEngine(data, name)
                     print "File saved as", plotter.save(extensions[ext])
+                    plotter.close()
                 else:
                     print "Wrong extension, saving cancelled."
-                    del plotter
                     return
-                del plotter
-
             else:
                 print "The specified number is not valid"
         except ValueError as error:
@@ -110,8 +122,8 @@ class Persinterface(object):
 
     def fitting(self):
         """ Fit a curve to data """
-        function = {'1': ('Linear fit', "lin"),
-                    '2': ('Exponential fit', "exp")}
+        functions = {'1': ('Linear fit', "lin"),
+                     '2': ('Exponential fit', "exp")}
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
         graph_number = raw_input(
@@ -122,29 +134,21 @@ class Persinterface(object):
             if graph_number in xrange(len(index_list)):
                 name = index_list[graph_number]
                 data = self.ioh_obj.memgrabgraph(name)
-
-                print "Choose function to fit"
-                for number in sorted(function.keys()):
-                    print number, ':', function[number][0]
-                fun = raw_input()
-                if fun in function.keys():
-                    fitter = fe.FitEngine(data, name, function[fun][1])
+                present, func = self.ask("function to fit", functions)
+                if present:
+                    fitter = fe.FitEngine(data, name, functions[func][1])
                 else:
                     print "Wrong function input"
                     return
 
-                print "Choose file extension"
-                for number in sorted(extensions.keys()):
-                    print number, ':', extensions[number]
-                ext = raw_input()
-                if ext in extensions.keys():
+                present, ext = self.ask("file extension", extensions)
+                if present:
                     print "File saved as", fitter.save(extensions[ext])
+                    fitter.close()
                 else:
                     print "Wrong extension, saving cancelled."
-                    del fitter
+                    fitter.close()
                     return
-                del fitter
-
             else:
                 print "The specified number is not valid"
         except ValueError as error:
