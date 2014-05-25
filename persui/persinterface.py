@@ -131,7 +131,6 @@ class Persinterface(object):
                     fitter = fe.FitEngine(data, name, function[fun][1])
                 else:
                     print "Wrong function input"
-                    del fitter
                     return
 
                 print "Choose file extension"
