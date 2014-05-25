@@ -2,6 +2,8 @@
  care of user input """
 from persio import iohandler as ioh
 from persanalysis import plotengine as pe
+from persanalysis import fitengine as fe
+import sys
 import os
 
 
@@ -64,7 +66,7 @@ class Persinterface(object):
 
     def exit(self):
         """ Exit program. """
-        exit(0)
+        sys.exit(0)
 
     def index(self):
         """ Print loaded XML objects index field. """
@@ -76,7 +78,7 @@ class Persinterface(object):
         index_list = self.ioh_obj.xmlindex()
         graph_number = raw_input(
             "Give the number of the graph you would like to plot "
-            "(valid numbers: 0 - " + str(len(index_list) - 1) + ") \n")
+            "(valid numbers: 0 - " + str(len(index_list) - 1) + ")\n")
         try:
             graph_number = int(graph_number)
             if graph_number in xrange(len(index_list)):
@@ -92,6 +94,7 @@ class Persinterface(object):
                     print "File saved as", plotter.save(extensions[ext])
                 else:
                     print "Wrong extension, saving cancelled."
+                    del plotter
                     return
                 del plotter
 
@@ -105,6 +108,50 @@ class Persinterface(object):
         """ Perform trending analysis of current@temperature in time. """
         pass
 
+    def fitting(self):
+        """ Fit a curve to data """
+        function = {'1': ('Linear fit', "lin"),
+                    '2': ('Exponential fit', "exp")}
+        extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
+        index_list = self.ioh_obj.xmlindex()
+        graph_number = raw_input(
+            "Give the number of the graph you would like to fit and plot "
+            "(valid numbers: 0 - " + str(len(index_list) - 1) + ")\n")
+        try:
+            graph_number = int(graph_number)
+            if graph_number in xrange(len(index_list)):
+                name = index_list[graph_number]
+                data = self.ioh_obj.memgrabgraph(name)
+
+                print "Choose function to fit"
+                for number in sorted(function.keys()):
+                    print number, ':', function[number][0]
+                fun = raw_input()
+                if fun in function.keys():
+                    fitter = fe.FitEngine(data, name, function[fun][1])
+                else:
+                    print "Wrong function input"
+                    del fitter
+                    return
+
+                print "Choose file extension"
+                for number in sorted(extensions.keys()):
+                    print number, ':', extensions[number]
+                ext = raw_input()
+                if ext in extensions.keys():
+                    print "File saved as", fitter.save(extensions[ext])
+                else:
+                    print "Wrong extension, saving cancelled."
+                    del fitter
+                    return
+                del fitter
+
+            else:
+                print "The specified number is not valid"
+        except ValueError as error:
+            print error
+            print "The specified input is not a number"
+
     def back(self):
         """ Go back to I/O menu. """
         self.loaded = False
@@ -115,8 +162,9 @@ class Persinterface(object):
 
     analysis_functions = {'1': ('Print graph index', index),
                           '2': ('Plot a graph', plot),
-                          '3': ('Perform a trend analysis', trend),
-                          '4': ('Return to I/O operations', back)}
+                          '3': ('Perform curve fitting to a graph', fitting),
+                          '4': ('Perform a trend analysis', trend),
+                          '5': ('Return to I/O operations', back)}
 
     def __init__(self):
         self.loaded = False
