@@ -24,7 +24,7 @@ class FitEngine(PlotEngine):
         popt, pcov = curve_fit(self.func[0], self.xval, self.yval)
         print "Function definition:"
         print self.func[1]
-        pcov = np.sqrt(pcov)
+        pcov = np.sqrt(np.abs(pcov))
         for i, par_val in enumerate(popt):
             string = "{0}: {1:.3g} +/- {2:.3g}".format(
                 self.func[2][i], par_val, pcov[i][i])
