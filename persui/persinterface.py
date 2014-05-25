@@ -94,7 +94,7 @@ class Persinterface(object):
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
         last = len(index_list)
-        graph_num = {str(i): i for i in xrange(last)}
+        graph_num = dict((str(i), i) for i in xrange(last))
         present, num = self.ask("graph number (valid: 0-" + str(last - 1)
                                 + ")", graph_num, quiet=True)
         if present:
@@ -122,7 +122,7 @@ class Persinterface(object):
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
         last = len(index_list)
-        graph_num = {str(i): i for i in xrange(last)}
+        graph_num = dict((str(i), i) for i in xrange(last))
         present, num = self.ask("graph number (valid: 0-" + str(last - 1)
                                 + ")", graph_num, quiet=True)
         if present:
