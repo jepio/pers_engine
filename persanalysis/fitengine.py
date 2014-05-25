@@ -24,12 +24,13 @@ class FitEngine(PlotEngine):
         popt, pcov = curve_fit(self.func[0], self.xval, self.yval)
         print "Function definition:"
         print self.func[1]
-        print pcov
+        pcov = np.sqrt(pcov)
         for i, par_val in enumerate(popt):
             string = "{0}: {1:.3g} +/- {2:.3g}".format(
-                self.func[2][i], par_val, 0)
+                self.func[2][i], par_val, pcov[i][i])
             print string
         xmin, xmax = plt.xlim()
+        ymin, ymax = plt.ylim()
         xvals = np.linspace(xmin, xmax, num=100)
-        parameters = ",".join(map(str,popt.tolist()))
-        plt.plot(xvals, self.func[0](xvals, eval(parameters)))
+        plt.plot(xvals, self.func[0](xvals, *popt))
+        plt.ylim(ymin, ymax)
