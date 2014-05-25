@@ -20,7 +20,6 @@ class PlotEngine(object):
         """ Save the plot with extension """
         name = self.name + "." + extension
         plt.savefig(name, bbox_inches="tight", dpi=96 * 2)
-        plt.close()
         return name
 
     def style(self, xlabel=r'temperature ($^\circ$C)',
@@ -30,3 +29,8 @@ class PlotEngine(object):
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         # plt.xlim(np.min(self.xval), np.max(self.xval))
+
+    @staticmethod
+    def close():
+        """ Close the current plot in case of failed input. """
+        plt.close()
