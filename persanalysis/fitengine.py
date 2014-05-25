@@ -21,7 +21,8 @@ class FitEngine(PlotEngine):
 
     def fit(self):
         """ Fit function to data and plot. """
-        popt, pcov = curve_fit(self.func[0], self.xval, self.yval)
+        func_to_fit = self.func[0]
+        popt, pcov = curve_fit(func_to_fit, self.xval, self.yval)
         print "Function definition:"
         print self.func[1]
         pcov = np.sqrt(np.abs(pcov))
@@ -32,5 +33,5 @@ class FitEngine(PlotEngine):
         xmin, xmax = plt.xlim()
         ymin, ymax = plt.ylim()
         xvals = np.linspace(xmin, xmax, num=100)
-        plt.plot(xvals, self.func[0](xvals, *popt))
+        plt.plot(xvals, func_to_fit(xvals, *popt))
         plt.ylim(ymin, ymax)
