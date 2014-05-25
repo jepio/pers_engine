@@ -1,6 +1,7 @@
 """ Module defines the IOHandler class for interacting with files. """
 import roothandler as rh
 import xmlhandler as xh
+import numpy as np
 
 
 class IOHandler(object):
@@ -94,6 +95,7 @@ class IOHandler(object):
             graphdata = self.root.find("graph[@name='{0}']".format(graphname))
             graphdata = xh.ET.tostringlist(graphdata, method="text")
             graphdata = [float(val) for val in graphdata]
+            graphdata = np.array(graphdata)
             (xval, yval, xerr, yerr) = (graphdata[::4], graphdata[1::4],
                                         graphdata[2::4], graphdata[3::4])
         return (xval, yval, xerr, yerr)
