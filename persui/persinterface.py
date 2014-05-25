@@ -58,7 +58,7 @@ class Persinterface(object):
                 self.ioh_obj = ioh.IOHandler()
             self.loaded = self.ioh_obj.xml2mem(filename)
             if self.loaded:
-                print "Successfully loaded file\n", filename
+                print "Successfully loaded file", filename
             else:
                 print "Failed to load file"
         else:
@@ -73,48 +73,43 @@ class Persinterface(object):
         print pretty_print(self.ioh_obj.xmlindex())
 
     @staticmethod
-    def ask(question, dictionary):
+    def ask(question, dictionary, quiet=False):
         """ Check whether answer to question is in dictionary. """
         print "Choose " + question
-        for number in sorted(dictionary.keys()):
-            opt = dictionary[number]
-            choice = opt if type(opt) is str else opt[0]
-            print number, ':', choice
+        if not quiet:
+            for number in sorted(dictionary.keys()):
+                opt = dictionary[number]
+                types = [int, str]
+                choice = opt if type(opt) in types else opt[0]
+                print number, ':', choice
+
         answer = raw_input()
         if answer in dictionary.keys():
-            return True, answer
+            return True, dictionary[answer]
         else:
             return False, None
-
 
     def plot(self):
         """ Plot graph from loaded XML file. """
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
-#       graph_num = [str(i) for i in xrange(len(index_list))]
-#        present, num = self.ask("graph number (valid: 0-" + graph_num[-1])
-        graph_number = raw_input(
-            "Give the number of the graph you would like to plot "
-            "(valid numbers: 0 - " + str(len(index_list) - 1) + ")\n")
-        try:
-            graph_number = int(graph_number)
-            if graph_number in xrange(len(index_list)):
-
-                present, ext = self.ask("file extension", extensions)
-                if present:
-                    name = index_list[graph_number]
-                    data = self.ioh_obj.memgrabgraph(name)
-                    plotter = pe.PlotEngine(data, name)
-                    print "File saved as", plotter.save(extensions[ext])
-                    plotter.close()
-                else:
-                    print "Wrong extension, saving cancelled."
-                    return
+        last = len(index_list)
+        graph_num = {str(i): i for i in xrange(last)}
+        present, num = self.ask("graph number (valid: 0-" + str(last - 1)
+                                + ")", graph_num, quiet=True)
+        if present:
+            present, ext = self.ask("file extension", extensions)
+            if present:
+                name = index_list[num]
+                data = self.ioh_obj.memgrabgraph(name)
+                plotter = pe.PlotEngine(data, name)
+                print "File saved as", plotter.save(ext)
+                plotter.close()
             else:
-                print "The specified number is not valid"
-        except ValueError as error:
-            print error
-            print "The specified input is not a number"
+                print "Wrong extension, saving cancelled."
+                return
+        else:
+            print "The specified number is not valid"
 
     def trend(self):
         """ Perform trending analysis of current@temperature in time. """
@@ -126,34 +121,30 @@ class Persinterface(object):
                      '2': ('Exponential fit', "exp")}
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         index_list = self.ioh_obj.xmlindex()
-        graph_number = raw_input(
-            "Give the number of the graph you would like to fit and plot "
-            "(valid numbers: 0 - " + str(len(index_list) - 1) + ")\n")
-        try:
-            graph_number = int(graph_number)
-            if graph_number in xrange(len(index_list)):
-                name = index_list[graph_number]
-                data = self.ioh_obj.memgrabgraph(name)
-                present, func = self.ask("function to fit", functions)
-                if present:
-                    fitter = fe.FitEngine(data, name, functions[func][1])
-                else:
-                    print "Wrong function input"
-                    return
-
-                present, ext = self.ask("file extension", extensions)
-                if present:
-                    print "File saved as", fitter.save(extensions[ext])
-                    fitter.close()
-                else:
-                    print "Wrong extension, saving cancelled."
-                    fitter.close()
-                    return
+        last = len(index_list)
+        graph_num = {str(i): i for i in xrange(last)}
+        present, num = self.ask("graph number (valid: 0-" + str(last - 1)
+                                + ")", graph_num, quiet=True)
+        if present:
+            name = index_list[num]
+            data = self.ioh_obj.memgrabgraph(name)
+            present, func = self.ask("function to fit", functions)
+            if present:
+                fitter = fe.FitEngine(data, name, func[1])
             else:
-                print "The specified number is not valid"
-        except ValueError as error:
-            print error
-            print "The specified input is not a number"
+                print "Wrong function input"
+                return
+
+            present, ext = self.ask("file extension", extensions)
+            if present:
+                print "File saved as", fitter.save(ext)
+                fitter.close()
+            else:
+                print "Wrong extension, saving cancelled."
+                fitter.close()
+                return
+        else:
+            print "The specified number is not valid"
 
     def back(self):
         """ Go back to I/O menu. """
