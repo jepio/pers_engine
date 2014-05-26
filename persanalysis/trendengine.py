@@ -29,7 +29,9 @@ class TrendEngine(FitEngine):
             self.ylimits(0, np.max(self.yval) * 1.2)
 
     def select(self, ioh_obj, point_num):
-        """ Select point number point_num from all graphs and return them. """
+        """
+        Select points with number point_num from all graphs and return them.
+        """
         for i, graph_name in enumerate(ioh_obj.xmlindex()):
             xval, yval, _, yerr = ioh_obj.memgrabgraph(graph_name)
             if point_num in xrange(len(xval)):
