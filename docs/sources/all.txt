@@ -1,0 +1,48 @@
+**********
+PersEngine
+**********
+This is the entry point for the user. This module can be run using python to present the user with a command-line interface to all of the packages functions.
+
+
+PersIO
+==========
+This submodule combines all functions and classes responsible for input and output operations.
+
+ROOTHandler
+------------
+.. automodule:: persio.roothandler
+
+XMLHandler
+------------
+.. automodule:: persio.xmlhandler
+
+IOHandler
+------------
+.. automodule:: persio.iohandler
+
+
+PersUI
+===========
+This submodule takes care of handling the users needs and checking whether his inputs are correct.
+
+PersInterface
+-------------
+.. automodule:: persui.persinterface
+
+
+PersAnalysis
+============
+This submodule is what turns raw data into beautiful plots. Currently the user can perform plotting, fitting and trending.
+
+PlotEngine
+-----------
+.. automodule:: persanalysis.plotengine
+
+FitEngine
+-----------
+.. automodule:: persanalysis.fitengine
+
+TrendEngine
+-----------
+.. automodule:: persanalysis.trendengine
+

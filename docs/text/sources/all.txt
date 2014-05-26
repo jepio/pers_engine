@@ -1,0 +1,272 @@
+
+PersEngine
+**********
+
+This is the entry point for the user. This module can be run using
+python to present the user with a command-line interface to all of the
+packages functions.
+
+
+PersIO
+======
+
+This submodule combines all functions and classes responsible for
+input and output operations.
+
+
+ROOTHandler
+-----------
+
+This module combines functions used for interacting with ROOT files
+
+persio.roothandler.getkeynames(self)
+
+   Gets all keys from a directory in a ROOT TFile. This is an
+   extension to the TGraphErrors class.
+
+   Returns a list of strings.
+
+persio.roothandler.graphtonp(graph)
+
+   Converts a graph TGraphErrors object into a numpy array that has
+   columns: x, y, xerr, yerr.
+
+   Returns numpy array.
+
+persio.roothandler.main()
+
+   Testing procedure: plot all graphs in a ROOT file.
+
+persio.roothandler.openroot(name)
+
+   Open a ROOT file.
+
+   Return keynames and handle to file.
+
+
+XMLHandler
+----------
+
+This module combines functions used for interacting with XML files
+
+persio.xmlhandler.creategraph(xmlelement, graph_data, name, num)
+
+   Create a graph entry in the XML tree.
+
+   Pass the mother element, an array of graph data, the graph name and
+   the number of points.
+
+persio.xmlhandler.createindex(keynames)
+
+   Generate an XML tree, together with an index with all key names.
+
+   Returns the XML tree reference.
+
+persio.xmlhandler.createpoint(point, pointtuple)
+
+   Create a point entry in the graph entry.
+
+   Pass point object and a tuple of x/y values and x/y errors.
+
+persio.xmlhandler.writexml(xmlelement, name)
+
+   Write the XML tree to disk.
+
+
+IOHandler
+---------
+
+Module defines the IOHandler class for interacting with files.
+
+class class persio.iohandler.IOHandler(filename='input_data.root')
+
+   Bases: "object"
+
+   Class for interacting with ROOT/XML files. The main purpose is to
+   convert ROOT to XML.
+
+   memgrabgraph(graphname)
+
+      Grabs a graph called graphname from the xml file.
+
+      Returns a tuple of x, y, xerr, yerr values.
+
+   root2xml()
+
+      Reads a ROOT file and outputs all TGraphErrors objects into a
+      XML file.
+
+      Returns True or False depending on success/failure.
+
+   xml2mem(xmlfilename=None)
+
+      Loads either xmlfilename or the object output file into memory.
+      Defines references to: xml tree, xml root, xml index and toggles
+      a switch so the class knows it has loaded data.
+
+      Returns True or False depending on success/failure.
+
+   xmlindex()
+
+      Returns the index of a loaded xml file.
+
+
+PersUI
+======
+
+This submodule takes care of handling the users needs and checking
+whether his inputs are correct.
+
+
+PersInterface
+-------------
+
+The Persistency UI module, defines the Persinterface class, which
+offers the user the command-line interface.
+
+class class persui.persinterface.Persinterface
+
+   Bases: "object"
+
+   The User Interface class, defines methods for the user to execute.
+   To extend functionality, write an extra function and add to the
+   function dictionaries.
+
+   static ask(question, dictionary, quiet=False)
+
+      Check whether answer to question is in dictionary.
+
+      Returns logic value and dictonary value
+
+   back()
+
+      Go back to I/O menu.
+
+   convert()
+
+      Convert file from ROOT to XML verbosely. Will default to
+      input_data.root as the filename.
+
+   exit()
+
+      Exit program.
+
+   fitting()
+
+      Fit a curve to data
+
+   index()
+
+      Print loaded XML objects index field.
+
+   load()
+
+      Load XML file into the engine verbosely. Will default to
+      input_data.xml as the filename.
+
+   plot()
+
+      Plot graph from loaded XML file.
+
+   run()
+
+      Run the user interface.
+
+   select(array)
+
+      Select an action from array based on user input.
+
+   trend()
+
+      Perform trending analysis of current@point in time.
+
+   welcome_message()
+
+      Print the welcome message.
+
+persui.persinterface.pretty_print(array)
+
+   Convert array to columns. Borrowed from stackexchange.
+
+   Returns joined string.
+
+
+PersAnalysis
+============
+
+This submodule is what turns raw data into beautiful plots. Currently
+the user can perform plotting, fitting and trending.
+
+
+PlotEngine
+----------
+
+Module for plotting graphs to file
+
+class class persanalysis.plotengine.PlotEngine(data_tuple, name)
+
+   Bases: "object"
+
+   Class that performs saving of plots.
+
+   static close()
+
+      Close the current plot in case of failed input.
+
+   save(extension)
+
+      Save the plot with extension.
+
+      Returns filename that was saved to.
+
+   style(xlabel='Temperature ($^\circ$C)', ylabel='Current (mA)', title='IT graph for sensor ')
+
+      Label the axes
+
+   static xlimits(xmin, xmax)
+
+      Change plot x axis limits.
+
+   static ylimits(ymin, ymax)
+
+      Change plot y axis limits.
+
+
+FitEngine
+---------
+
+Module for fitting graphs to file
+
+class class persanalysis.fitengine.FitEngine(data_tuple, name, func_name)
+
+   Bases: "persanalysis.plotengine.PlotEngine"
+
+   Class that performs fitting and saving of plots.
+
+   fit()
+
+      Fit function to data and plot.
+
+
+TrendEngine
+-----------
+
+Module for plotting a trend in data to a file
+
+class class persanalysis.trendengine.TrendEngine(ioh_obj, point_num=None, xcoord=None)
+
+   Bases: "persanalysis.fitengine.FitEngine"
+
+   Class that performs trend analysis of data, then fits and plots it.
+
+   select(ioh_obj, point_num)
+
+      Select point with number point_num from all graphs.
+
+      Returns tuple of x, y, xerr, yerr values.
+
+   selectx(ioh_obj, xcoord)
+
+      Select point closest to xcoord from all graphs.
+
+      Returns tuple of x, y, xerr, yerr values.

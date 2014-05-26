@@ -1,0 +1,27 @@
+
+Welcome to pers_engine's documentation!
+***************************************
+
+This document will allow you to browse the **PersEngine** package
+without having to look through the source files.
+
+* PersEngine
+  * PersIO
+    * ROOTHandler
+    * XMLHandler
+    * IOHandler
+  * PersUI
+    * PersInterface
+  * PersAnalysis
+    * PlotEngine
+    * FitEngine
+    * TrendEngine
+
+Indices and tables
+******************
+
+* *Index*
+
+* *Module Index*
+
+* *Search Page*
