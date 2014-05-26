@@ -26,6 +26,8 @@ class FitEngine(PlotEngine):
                                sigma=self.yerr)
         print "Function definition:"
         print self.func[1]
+        if type(pcov) is float:
+            pcov = np.zeros((len(popt), len(popt)))
         pcov = np.sqrt(np.abs(pcov))
         for i, par_val in enumerate(popt):
             string = "{0}: {1:.3g} +/- {2:.3g}".format(
