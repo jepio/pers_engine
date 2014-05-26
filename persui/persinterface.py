@@ -114,7 +114,7 @@ class Persinterface(object):
     def trend(self):
         """ Perform trending analysis of current@temperature in time. """
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
-        point_num = dict((str(i), i) for i in xrange(40))
+        point_num = dict((str(i), i) for i in xrange(40 + 1))
         present, num = self.ask("point number to trend (valid: 0-40)",
                                 point_num, quiet=True)
         if present:
