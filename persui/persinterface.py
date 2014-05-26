@@ -134,7 +134,7 @@ class Persinterface(object):
             else:
                 print "Wrong function input"
                 return
-
+## Improve this condition structure
             present, ext = self.ask("file extension", extensions)
             if present:
                 print "File saved as", fitter.save(ext)
