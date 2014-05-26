@@ -115,18 +115,36 @@ class Persinterface(object):
         """ Perform trending analysis of current@point in time. """
         extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
         point_num = dict((str(i), i) for i in xrange(34 + 1))
-        present, num = self.ask("point number to trend (valid: 0-34)",
-                                point_num, quiet=True)
+        method = {'1': ('Point number', 1), '2': ('Closest temperature', 2)}
+        num = None
+        coord = None
+        present, meth = self.ask("trending based on:", method)
         if present:
-            present, ext = self.ask("file extension", extensions)
+            if meth[1] == 1:
+                present, num = self.ask("point number to trend (valid: 0-34)",
+                                        point_num, quiet=True)
+            elif meth[1] == 2:
+                try:
+                    coord = raw_input("Choose temperature (valid:"
+                                      " -10.0 - 10.0) \n")
+                    coord = float(coord)
+                    present = True if coord**2 < 100 else False
+                except ValueError:
+                    coord = None
+                    present = False
             if present:
-                trender = te.TrendEngine(self.ioh_obj, num)
-                print "File saved as", trender.save(ext)
-                trender.close()
+                present, ext = self.ask("file extension", extensions)
+                if present:
+                    trender = te.TrendEngine(self.ioh_obj, point_num=num,
+                                             xcoord=coord)
+                    print "File saved as", trender.save(ext)
+                    trender.close()
+                else:
+                    print "Wrong extension, saving cancelled."
             else:
-                print "Wrong extension, saving cancelled."
+                print "The specified number is not valid."
         else:
-            print "The specified number is not valid."
+            print "Wrong trending method."
 
     def fitting(self):
         """ Fit a curve to data """
