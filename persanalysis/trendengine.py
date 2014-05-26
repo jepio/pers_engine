@@ -14,9 +14,9 @@ class TrendEngine(FitEngine):
         self.yerr = []
         self.xerr = None
         data_tuple = self.select(ioh_obj, point_num)
-        name = "trend_point" + str(point_num)
+        name = "point" + str(point_num)
         super(TrendEngine, self).__init__(data_tuple, name, "lin")
-        self.style(xlabel="Time (weeks)")
+        self.style(xlabel="Time (weeks)", title="Trend for ")
 
     def select(self, ioh_obj, point_num):
         """ Select point number point_num from all graphs and return them. """
