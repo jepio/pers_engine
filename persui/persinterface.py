@@ -3,6 +3,7 @@
 from persio import iohandler as ioh
 from persanalysis import plotengine as pe
 from persanalysis import fitengine as fe
+from persanalysis import trendengine as te
 import sys
 import os
 
@@ -109,11 +110,24 @@ class Persinterface(object):
                 print "Wrong extension, saving cancelled."
                 return
         else:
-            print "The specified number is not valid"
+            print "The specified number is not valid."
 
     def trend(self):
         """ Perform trending analysis of current@temperature in time. """
-        pass
+        extensions = {'1': 'eps', '2': 'pdf', '3': 'png'}
+        point_num = dict((str(i), i) for i in xrange(40))
+        present, num = self.ask("point number to trend (valid: 0-40)",
+                                point_num, quiet=True)
+        if present:
+            present, ext = self.ask("file extension", extensions)
+            if present:
+                trender = te.TrendEngine(self.ioh_obj, num)
+                print "File saved as", trender.save(ext)
+                trender.close()
+            else:
+                print "Wrong extension, saving cancelled."
+        else:
+            print "The specified number is not valid."
 
     def fitting(self):
         """ Fit a curve to data """
@@ -134,7 +148,7 @@ class Persinterface(object):
             else:
                 print "Wrong function input"
                 return
-## Improve this condition structure
+# Improve this condition structure
             present, ext = self.ask("file extension", extensions)
             if present:
                 print "File saved as", fitter.save(ext)
