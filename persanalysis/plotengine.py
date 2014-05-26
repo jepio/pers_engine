@@ -35,3 +35,13 @@ class PlotEngine(object):
     def close():
         """ Close the current plot in case of failed input. """
         plt.close()
+
+    @staticmethod
+    def ylimits(ymin, ymax):
+        """ Change plot y axis limits. """
+        plt.ylim(ymin, ymax)
+
+    @staticmethod
+    def xlimits(xmin, xmax):
+        """ Change plot x axis limits. """
+        plt.xlim(xmin, xmax)
