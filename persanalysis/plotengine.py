@@ -22,8 +22,8 @@ class PlotEngine(object):
         plt.savefig(name, bbox_inches="tight", dpi=96 * 2)
         return name
 
-    def style(self, xlabel=r'temperature ($^\circ$C)',
-              ylabel="current (mA)"):
+    def style(self, xlabel=r'Temperature ($^\circ$C)',
+              ylabel="Current (mA)"):
         """ Label the axes """
 
 ## Change this titling to make it more general.
