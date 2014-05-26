@@ -1,5 +1,5 @@
-""" The Persistency UI modules, defines the Persinterface class, which takes
- care of user input """
+""" The Persistency UI module, defines the Persinterface class, which offers
+the user the command-line interface. """
 from persio import iohandler as ioh
 from persanalysis import plotengine as pe
 from persanalysis import fitengine as fe
@@ -10,7 +10,7 @@ import os
 
 def pretty_print(array):
     """
-    Convert output to columns. Borrowed from stackexchange.
+    Convert array to columns. Borrowed from stackexchange.
 
     Returns joined string.
     """
