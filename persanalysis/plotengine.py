@@ -25,6 +25,8 @@ class PlotEngine(object):
     def style(self, xlabel=r'temperature ($^\circ$C)',
               ylabel="current (mA)"):
         """ Label the axes """
+
+## Change this titling to make it more general.
         plt.title("IT graph for sensor " + self.name)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
