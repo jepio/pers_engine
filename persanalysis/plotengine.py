@@ -23,11 +23,10 @@ class PlotEngine(object):
         return name
 
     def style(self, xlabel=r'Temperature ($^\circ$C)',
-              ylabel="Current (mA)"):
+              ylabel="Current (mA)", title="IT graph for sensor "):
         """ Label the axes """
 
-## Change this titling to make it more general.
-        plt.title("IT graph for sensor " + self.name)
+        plt.title(title + self.name)
         plt.xlabel(xlabel)
         plt.ylabel(ylabel)
         # plt.xlim(np.min(self.xval), np.max(self.xval))
