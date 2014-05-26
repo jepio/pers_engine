@@ -11,6 +11,7 @@ class PlotEngine(object):
         xval, yval, xerrors, yerrors = data_tuple
         self.xval = xval
         self.yval = yval
+        self.yerr = yerrors
         self.name = name
         plt.errorbar(xval, yval, xerr=xerrors, yerr=yerrors, marker=".",
                      linestyle="None")
