@@ -42,3 +42,18 @@ class TrendEngine(FitEngine):
         self.yval = np.array(self.yval)
         self.yerr = np.array(self.yerr)
         return self.xval, self.yval, self.xerr, self.yerr
+
+    def selectx(self, ioh_obj, xcoord):
+        """
+        Select points closest to xcoord from all graphs and return them.
+        """
+        for i, graph_name in enumerate(ioh_obj.xmlindex()):
+            xval, yval, _, yerr = ioh_obj.memgrabgraph(graph_name)
+            idx = np.abs(xval-xcoord).argmin()
+            self.xval.append(i)
+            self.yval.append(yval[idx])
+            self.yerr.append(yerr[idx])
+        self.xval = np.array(self.xval)
+        self.yval = np.array(self.yval)
+        self.yerr = np.array(self.yerr)
+        return self.xval, self.yval, self.xerr, self.yerr
