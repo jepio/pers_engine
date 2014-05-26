@@ -128,7 +128,7 @@ class Persinterface(object):
                     coord = raw_input("Choose temperature (valid:"
                                       " -10.0 - 10.0) \n")
                     coord = float(coord)
-                    present = True if coord**2 < 100 else False
+                    present = True if coord ** 2 <= 100 else False
                 except ValueError:
                     coord = None
                     present = False
