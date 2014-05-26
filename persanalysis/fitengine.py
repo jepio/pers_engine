@@ -22,7 +22,8 @@ class FitEngine(PlotEngine):
     def fit(self):
         """ Fit function to data and plot. """
         func_to_fit = self.func[0]
-        popt, pcov = curve_fit(func_to_fit, self.xval, self.yval)
+        popt, pcov = curve_fit(func_to_fit, self.xval, self.yval,
+                               sigma=self.yerr)
         print "Function definition:"
         print self.func[1]
         pcov = np.sqrt(np.abs(pcov))
