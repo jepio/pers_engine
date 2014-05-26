@@ -8,15 +8,25 @@ class TrendEngine(FitEngine):
 
     """ Class that performs trend analysis of data, then fits and plots it. """
 
-    def __init__(self, ioh_obj, point_num):
+    def __init__(self, ioh_obj, point_num=None, xcoord=None):
         self.xval = []
         self.yval = []
         self.yerr = []
         self.xerr = None
-        data_tuple = self.select(ioh_obj, point_num)
+        if point_num is not None:
+            data_tuple = self.select(ioh_obj, point_num)
+        elif xcoord is not None:
+            data_tuple = self.selectx(ioh_obj, xcoord)
         name = "point" + str(point_num)
-        super(TrendEngine, self).__init__(data_tuple, name, "lin")
+        if len(data_tuple[0]) < 2:
+            print "Can't fit curve, not enough points"
+            super(FitEngine, self).__init__(data_tuple, name)
+        else:
+            super(TrendEngine, self).__init__(data_tuple, name, "lin")
         self.style(xlabel="Time (weeks)", title="Trend for ")
+        self.xlimits(-1, 86)
+        if len(self.xval) > 0:
+            self.ylimits(0, np.max(self.yval) * 1.2)
 
     def select(self, ioh_obj, point_num):
         """ Select point number point_num from all graphs and return them. """
