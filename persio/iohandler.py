@@ -7,7 +7,8 @@ import numpy as np
 class IOHandler(object):
 
     """
-    Class for interacting with ROOT/XML files, esp. converintg between them.
+    Class for interacting with ROOT/XML files. The main purpose is to convert
+    ROOT to XML.
     """
 
     def __init__(self, filename='input_data.root'):
