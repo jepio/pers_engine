@@ -15,9 +15,11 @@ class TrendEngine(FitEngine):
         self.xerr = None
         if point_num is not None:
             data_tuple = self.select(ioh_obj, point_num)
+            name = "point_" + str(point_num)
         elif xcoord is not None:
             data_tuple = self.selectx(ioh_obj, xcoord)
-        name = "point" + str(point_num)
+            name = "temperature_" + str(xcoord)
+
         if len(data_tuple[0]) < 2:
             print "Can't fit curve, not enough points"
             super(FitEngine, self).__init__(data_tuple, name)
@@ -49,7 +51,7 @@ class TrendEngine(FitEngine):
         """
         for i, graph_name in enumerate(ioh_obj.xmlindex()):
             xval, yval, _, yerr = ioh_obj.memgrabgraph(graph_name)
-            idx = np.abs(xval-xcoord).argmin()
+            idx = np.abs(xval - xcoord).argmin()
             self.xval.append(i)
             self.yval.append(yval[idx])
             self.yerr.append(yerr[idx])
