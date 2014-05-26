@@ -1,17 +1,24 @@
 pers_engine
 ===========
 
-A persistency engine to convert data from ROOT binary format to XML and subsequently process it. Written for my class.
+### Introduction
+A persistency engine to convert data from ROOT binary format to XML and subsequently analyse it. Written for my **Python in the Enterprise** class.
 
-Requires:
-*   Python 2.7
-*   Numpy
-*   PyROOT
+### Dependencies:
+*   Python >=2.6
+*   NumPy
+*   SciPy
+*   PyROOT 
 *   Matplotlib
 
-Run by executing `python2.7 persengine.py` or `./persengine.py`
+Python3 is not supported due to the fact that PyROOT doesn't work with it by default. If ROOT6 introduces support for Python3, then it will also be part of the next upgrade of pers_engine.
 
-Run and follow the onscreen instructions. As a default a *input_data.root* will be turned into *input_data.xml*. You can also save plots in *png*, *pdf*, *eps* and print the index of an XML file.
+### Running
+Run by executing either `python2.7 /path/to/persengine.py` or `/path/to/persengine.py`.
 
-Currently working on trending.
+### Description
+Follow the onscreen instructions. All that is required from the user is inputting digits or strings for filenames. The default functionality is to convert *input_data.root* to *input_data.xml*. This file can then be plotted and saved in *png*, *pdf*, *eps* format. The option also exists to fit a first order polynomial or an exponential function to the data.
+
+### Future
+Currently working on trending analysis.
 
