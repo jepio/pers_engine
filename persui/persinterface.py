@@ -108,7 +108,6 @@ class Persinterface(object):
                 plotter.close()
             else:
                 print "Wrong extension, saving cancelled."
-                return
         else:
             print "The specified number is not valid."
 
@@ -144,19 +143,15 @@ class Persinterface(object):
             data = self.ioh_obj.memgrabgraph(name)
             present, func = self.ask("function to fit", functions)
             if present:
-                fitter = fe.FitEngine(data, name, func[1])
+                present, ext = self.ask("file extension", extensions)
+                if present:
+                    fitter = fe.FitEngine(data, name, func[1])
+                    print "File saved as", fitter.save(ext)
+                    fitter.close()
+                else:
+                    print "Wrong extension, saving cancelled."
             else:
                 print "Wrong function input"
-                return
-# Improve this condition structure
-            present, ext = self.ask("file extension", extensions)
-            if present:
-                print "File saved as", fitter.save(ext)
-                fitter.close()
-            else:
-                print "Wrong extension, saving cancelled."
-                fitter.close()
-                return
         else:
             print "The specified number is not valid"
 
