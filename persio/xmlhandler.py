@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 
 def createindex(keynames):
     """
-    Generate an XML tree, together with an
-    index with all key names.
+    Generate an XML tree, together with an index with all key names.
+
     Returns the XML tree reference.
     """
     indexstring = ' '.join(keynames)
@@ -18,8 +18,8 @@ def createindex(keynames):
 def createpoint(point, pointtuple):
     """
     Create a point entry in the graph entry.
-    Pass point object and a tuple of values
-    with errors.
+
+    Pass point object and a tuple of x/y values and x/y errors.
     """
     xval, yval, xerr, yerr = pointtuple
     value = ET.SubElement(point, "x")
@@ -35,8 +35,8 @@ def createpoint(point, pointtuple):
 def creategraph(xmlelement, graph_data, name, num):
     """
     Create a graph entry in the XML tree.
-    Pass the mother element, an array of
-    graph data, the graph name and the
+
+    Pass the mother element, an array of graph data, the graph name and the
     number of points.
     """
     graph = ET.SubElement(xmlelement, "graph")

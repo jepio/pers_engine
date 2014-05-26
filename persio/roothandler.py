@@ -7,9 +7,10 @@ import numpy as np
 
 def getkeynames(self):
     """
-    Gets all keys from a directory in a ROOT TFile.
-    Returns as list of strings. This is an extension
+    Gets all keys from a directory in a ROOT TFile. This is an extension
     to the TGraphErrors class.
+
+    Returns a list of strings.
     """
     self.cd()
     return [key.GetName() for key in gDirectory.GetListOfKeys()]
@@ -17,8 +18,9 @@ def getkeynames(self):
 
 def graphtonp(graph):
     """
-    Converts a TGraphErrors object into a numpy array
-    that has columns: x, y, xerr, yerr.
+    Converts a graph TGraphErrors object into a numpy array that has columns: x, y, xerr, yerr.
+
+    Returns numpy array.
     """
     output = []
     functions = (graph.GetX, graph.GetY, graph.GetEX, graph.GetEY)
@@ -33,7 +35,11 @@ def graphtonp(graph):
 
 
 def openroot(name):
-    """ Open a ROOT file, return keynames and handle to file. """
+    """
+    Open a ROOT file.
+
+    Return keynames and handle to file.
+    """
     TFile.getkeynames = getkeynames
     myfile = TFile.Open(name)
     if myfile:

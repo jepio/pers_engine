@@ -18,7 +18,11 @@ class PlotEngine(object):
         self.style()
 
     def save(self, extension):
-        """ Save the plot with extension """
+        """
+        Save the plot with extension.
+
+        Returns filename that was saved to.
+        """
         name = self.name + "." + extension
         plt.savefig(name, bbox_inches="tight", dpi=96 * 2)
         return name

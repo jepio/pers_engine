@@ -32,7 +32,9 @@ class TrendEngine(FitEngine):
 
     def select(self, ioh_obj, point_num):
         """
-        Select points with number point_num from all graphs and return them.
+        Select point with number point_num from all graphs.
+
+        Returns tuple of x, y, xerr, yerr values.
         """
         for i, graph_name in enumerate(ioh_obj.xmlindex()):
             xval, yval, _, yerr = ioh_obj.memgrabgraph(graph_name)
@@ -47,7 +49,9 @@ class TrendEngine(FitEngine):
 
     def selectx(self, ioh_obj, xcoord):
         """
-        Select points closest to xcoord from all graphs and return them.
+        Select point closest to xcoord from all graphs.
+
+        Returns tuple of x, y, xerr, yerr values.
         """
         for i, graph_name in enumerate(ioh_obj.xmlindex()):
             xval, yval, _, yerr = ioh_obj.memgrabgraph(graph_name)

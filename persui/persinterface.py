@@ -9,7 +9,11 @@ import os
 
 
 def pretty_print(array):
-    """ Convert output to columns. Borrowed from stackexchange. """
+    """
+    Convert output to columns. Borrowed from stackexchange.
+
+    Returns joined string.
+    """
     cl_output = array[:]
     columns = len(cl_output) // 30 + 2
     for i, val in enumerate(cl_output):
@@ -75,7 +79,11 @@ class Persinterface(object):
 
     @staticmethod
     def ask(question, dictionary, quiet=False):
-        """ Check whether answer to question is in dictionary. """
+        """
+        Check whether answer to question is in dictionary.
+
+        Returns logic value and dictonary value
+        """
         print "Choose " + question
         if not quiet:
             for number in sorted(dictionary.keys()):

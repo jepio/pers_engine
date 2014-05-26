@@ -12,9 +12,8 @@ class IOHandler(object):
 
     def __init__(self, filename='input_data.root'):
         """
-        Initialize the IOHandler with a filename to read from.
-        Will define the output file as filename with the extension
-        '.xml'.
+        Initialize the IOHandler with a filename to read from. Will define the
+        output file as filename with the extension '.xml'.
         """
         self.input = filename
         self.output = filename.split('.')[0] + '.xml'
@@ -23,8 +22,8 @@ class IOHandler(object):
 
     def root2xml(self):
         """
-        Reads a ROOT file and outputs all TGraphErrors
-        objects into a XML file.
+        Reads a ROOT file and outputs all TGraphErrors objects into a XML file.
+
         Returns True or False depending on success/failure.
         """
         rootfile, keynames = rh.openroot(self.input)
@@ -53,12 +52,10 @@ class IOHandler(object):
 
     def xml2mem(self, xmlfilename=None):
         """
-        Loads either xmlfilename or the initialized output file into memory.
-        Defines references to:
-            xml tree,
-            xml root,
-            xml index
-        and toggles a switch so the class knows it has something loaded.
+        Loads either xmlfilename or the object output file into memory.
+        Defines references to: xml tree, xml root, xml index and toggles a
+        switch so the class knows it has loaded data.
+
         Returns True or False depending on success/failure.
         """
         if self.converted:
@@ -85,11 +82,9 @@ class IOHandler(object):
 
     def memgrabgraph(self, graphname):
         """
-        Grabs a graph called graphname from the xml file. Returns a tuple of:
-            x - x points
-            y - y points
-            xe - error bars on x points
-            ye - error bars on y points
+        Grabs a graph called graphname from the xml file.
+
+        Returns a tuple of x, y, xerr, yerr values.
         """
         if self.loaded:
             graphdata = self.root.find("graph[@name='{0}']".format(graphname))
