@@ -1,8 +1,10 @@
 The documentation of the **pers_engine** has been built using the Sphinx Python package. The plain text version is available in *text* directory.
 To build further versions of the documentation, such as:
-    * PDF
-    * HTML
-    * epub
+
+* PDF
+* HTML
+* epub
+
 make sure you have Sphinx installed and run e.g.:
 
 ```bash
