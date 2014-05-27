@@ -13,6 +13,7 @@ class PlotEngine(object):
         self.yval = yval
         self.yerr = yerrors
         self.name = name
+        plt.figure(figsize=(6, 4.5))
         plt.errorbar(xval, yval, xerr=xerrors, yerr=yerrors, marker=".",
                      linestyle="None")
         self.style()
