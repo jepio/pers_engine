@@ -1,6 +1,5 @@
 # Release notes
 
-<<<<<<< HEAD
 ### v1.0 - 27.05.2014
 * Added documentation
 * First full release
@@ -24,13 +23,3 @@
 
 ### v0.01 - 17.05.2014
 + Added saving graphs from ROOT file
-=======
-### Version 1.0
-+ Added converting ROOT file to XML file
-+ Added reading graphs from XML files
-+ Added command-line interface
-+ Added saving plots to file
-+ Added fitting curves (exponential, linear) to data
-+ Added trending points over several graphs
-
->>>>>>> 185f08bea1e6cf028f65f59787df5b9f318d2332
