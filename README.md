@@ -17,8 +17,6 @@ Python3 is not supported due to the fact that PyROOT doesn't work with it by def
 Run by executing either `python2.7 /path/to/persengine.py` or `/path/to/persengine.py`.
 
 ### Description
-Follow the onscreen instructions. All that is required from the user is inputting digits or strings for filenames. The default functionality is to convert *input_data.root* to *input_data.xml*. This file can then be plotted and saved in *png*, *pdf*, *eps* format. The option also exists to fit a first order polynomial or an exponential function to the data.
+Follow the onscreen instructions. All that is required from the user is inputting digits or strings for filenames. The default functionality is to convert *input_data.root* to *input_data.xml*. This file can then be plotted and saved in *png*, *pdf*, *eps* format. The option also exists to fit a first order polynomial or an exponential function to the data. Furthermore, the trend of a specified point in time can be plotted and analyzed.
 
-### Future
-Currently working on trending analysis.
 
